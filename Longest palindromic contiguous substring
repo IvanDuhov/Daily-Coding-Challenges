@@ -1,0 +1,88 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DailyCodingChallenges
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            AmazonPalindromeSubstring("bananas");
+
+            Console.ReadKey();
+        }
+        
+        static void AmazonPalindromeSubstring(string input)
+        {
+            string[] allPossibleSubstrings = AllPossibleSubstrings(input);
+
+            string palindrome = "";
+
+            foreach (var sequence in allPossibleSubstrings)
+            {
+                if (IsPalindrome(sequence) && sequence.Length > palindrome.Length)
+                {
+                    palindrome = sequence;
+                }
+            }
+
+            if (palindrome != null)
+            {
+                Console.WriteLine("The longest palindromic contiguous substring has length of {0} and it is: {1}", palindrome.Length, palindrome);
+            }
+            else
+            {
+                Console.WriteLine("In this string there isn't palindromic contiguous substring");
+            }
+        }
+
+        static bool IsPalindrome(string input)
+        {
+            for (int i = 0; i < input.Length / 2; i++)
+            {
+                if (!(input[i] == input[input.Length - i - 1]))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        static int CountOfPossibleSubstrings(string input)
+        {
+            int result = 0;
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                result += i;
+            }
+
+            return result;
+        }
+
+        static string[] AllPossibleSubstrings(string input)
+        {
+            string[] allPossibleSubstrings = new string[CountOfPossibleSubstrings(input) - 1];
+            int arrayIndex = 0;
+
+            for (int i = 2; i < input.Length; i++)
+            {
+                for (int j = 0; j < input.Length - i + 1; j++)
+                {
+                    string sequence = input.Substring(j, i);
+                    //Console.WriteLine(sequence);
+
+                    allPossibleSubstrings[arrayIndex] = sequence;
+                    arrayIndex++;
+                }
+            }
+
+            return allPossibleSubstrings;
+        }
+
+    }
+}
