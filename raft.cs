@@ -1,10 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Linq.Expressions;
 
 namespace ConsoleApp1
 {
@@ -32,46 +28,48 @@ namespace ConsoleApp1
 
             while (!successfullPassage)
             {
-                count = 0;
-                goatsWeight.Clear();
                 goatsWeight = goatsWeightStr.Split(' ').Select(int.Parse).ToList();
+
                 goatsWeight.Sort();
                 goatsWeight.Reverse();
 
-                while (count <= k)
+                for (int i = 0; i < k; i++)
                 {
                     int currentWeight = 0;
+                    List<int> removedGoats = new List<int>();
 
-                    for (int i = 0; i < goatsWeight.Count; i++)
+                    for (int j = 0; j < goatsWeight.Count; j++)
                     {
-                        goatsWeight.Sort();
-                        goatsWeight.Reverse();
 
                         if (currentWeight >= capacity)
                         {
-                            currentWeight = 0;
                             break;
                         }
-                        else if (currentWeight <= capacity)
+                        else
                         {
-                            currentWeight += goatsWeight[i];
-                            goatsWeight.Remove(goatsWeight[i]);
+                            if (currentWeight + goatsWeight[j] <= capacity)
+                            {
+                                currentWeight += goatsWeight[j];
+                                removedGoats.Add(goatsWeight[j]);
+                            }
                         }
-
                     }
-                    count++;
 
-                    if (goatsWeight.Count == 0)
+                    foreach (var item in removedGoats)
                     {
-                        successfullPassage = true;
+                        goatsWeight.Remove(item);
                     }
+                }
+
+                if (goatsWeight.Count == 0)
+                {
+                    successfullPassage = true;
                 }
 
                 capacity++;
             }
-            Console.WriteLine(capacity);
+
+            Console.WriteLine(capacity - 1);
         }
-
-
     }
 }
