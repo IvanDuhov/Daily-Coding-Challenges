@@ -30,18 +30,56 @@
             var yCoordinate = document.getElementById("y").value;
             var radius = document.getElementById("r").value;
 
-            for (var i = 0; i < 360; i++) {
-                for (var j = 0; j < 360; j++) {
+            var count = 1;
+
+            var connectedPoints = new Array();
+            var notConectedPoints = new Array();
+
+            for (var i = 0; i < 500; i++) {
+                for (var j = 0; j < 500; j++) {
+                    var previousX, previousY;
+
                     if (Math.pow((i - xCoordinate), 2) + Math.pow((j - yCoordinate), 2) == radius * radius) {
+
+                        if (previousX != i && previousY != j && count % 2 == 0) {
+                            canvas.moveTo(previousX, previousY);
+                            canvas.lineTo(i, j);
+                            connectedPoints.push(i);
+
+                            if (count == 0) {
+                                notConectedPoints.push(i);
+                                notConectedPoints.push(j);
+                            }
+
+                        } else {
+                            notConectedPoints.push(i);
+                            notConectedPoints.push(j);
+                        }
+                        count++;
+
                         canvas.fillRect(i, j, 2, 2);
                         console.log("x= " + i + ", y= " + j);
                     }
 
                 }
-                //canvas.fillRect(parseInt(xCoordinate + radius * Math.cos(i)), parseInt(yCoordinate + radius * Math.cos(i)), 2, 2);
-                //   console.log(xCoordinate + radius * Math.cos(i) + " | " + yCoordinate + radius * Math.cos(i));
-
             }
+
+            for (var index = 0; index < notConectedPoints.length; index++) {
+                if (notConectedPoints.length > 0) {
+                    var x = notConectedPoints.pop();
+                    var y = notConectedPoints.pop();
+
+                    var nextX = notConectedPoints.pop();
+                    var nextY = notConectedPoints.pop();
+
+                    notConectedPoints.push(nextX);
+                    notConectedPoints.push(nextY);
+
+                    canvas.lineTo(nextX, nextY);
+                }
+            }
+
+            console.log(notConectedPoints.length);
             canvas.stroke();
         }
 
