@@ -58,34 +58,103 @@
 
             console.log(sixtyPoints.length / 2);
 
-            // TODO: START THE SECONDARY FROM APROXIMATELY 12 O'CLOCK
+            // TODO: START THE SECONDARY FROM APROXIMATELY 12 O'CLOCK: DONE
             var correctMins = new Array();
-            for (var i = 62; i < 125; i += 2) {
-                var x = points[i];
-                var y = points[i + 1];
+            for (var i = 64; i < 125; i += 2) {
+                var x = sixtyPoints[i];
+                var y = sixtyPoints[i + 1];
                 correctMins.push(x);
                 correctMins.push(y);
             }
-            for (var i = 0; i < 61; i += 2) {
-                var x = points[i];
-                var y = points[i + 1];
+            for (var i = 0; i < 65; i += 2) {
+                var x = sixtyPoints[i];
+                var y = sixtyPoints[i + 1];
                 correctMins.push(x);
                 correctMins.push(y);
             }
 
-            //TODO: DELETE THE PREVIOUS OLD LINE
+            var minuteTicker = new Array();
+
+            correctMins.forEach(element => {
+                minuteTicker.push(element);
+            });
+
+            var previousX, previousY;
+
+            var secondsPassed = 0;
+
+            //TODO: DELETE THE PREVIOUS OLD LINE: DONE
             function oneSecondFunction() {
-                var X = sixtyPoints.pop();
-                var Y = sixtyPoints.pop();
-
+                canvas.beginPath();
+                canvas.lineWidth = 3;
+                canvas.strokeStyle = "white";
                 canvas.moveTo(xCoordinate / 2, yCoordinate / 2);
-                canvas.lineTo(X, Y);
+                canvas.lineTo(previousX, previousY);
+                canvas.moveTo(xCoordinate / 2, yCoordinate / 2);
+                canvas.lineTo(previousX - 2, previousY - 2);
                 canvas.stroke();
 
-                // console.log(X + " | " + Y);
+                var X = correctMins.pop();
+                var Y = correctMins.pop();
+
+                canvas.beginPath();
+                canvas.strokeStyle = "black";
+                canvas.moveTo(xCoordinate / 2, yCoordinate / 2);
+                canvas.lineTo(X - 1, Y - 1);
+                canvas.stroke();
+
+                secondsPassed++;
+
+                previousX = X;
+                previousY = Y;
             }
 
-            setInterval(oneSecondFunction, 1000);
+            function checkIfAMinHasPassed() {
+                if (correctMins.length == 0) {
+                    for (var i = 64; i < 125; i += 2) {
+                        var x = sixtyPoints[i];
+                        var y = sixtyPoints[i + 1];
+                        correctMins.push(x);
+                        correctMins.push(y);
+                    }
+                    for (var i = 0; i < 65; i += 2) {
+                        var x = sixtyPoints[i];
+                        var y = sixtyPoints[i + 1];
+                        correctMins.push(x);
+                        correctMins.push(y);
+                    }
+                }
+
+                var previousMinX, previousMinY;
+
+                if (secondsPassed % 60 == 0) {
+                    canvas.beginPath();
+                    canvas.lineWidth = 3;
+                    canvas.strokeStyle = "white";
+                    canvas.moveTo(xCoordinate / 2, yCoordinate / 2);
+                    canvas.lineTo(previousX, previousY);
+                    canvas.moveTo(xCoordinate / 2, yCoordinate / 2);
+                    canvas.lineTo(previousX - 2, previousY - 2);
+                    canvas.stroke();
+
+                    var X = minuteTicker.pop();
+                    var Y = minuteTicker.pop();
+
+                    canvas.beginPath();
+                    canvas.strokeStyle = "black";
+                    canvas.moveTo(xCoordinate / 2, yCoordinate / 2);
+                    canvas.lineTo(X - 1, Y - 1);
+                    canvas.stroke();
+
+                    secondsPassed++;
+
+                    previousMinX = X;
+                    previousMinY = Y;
+                }
+            }
+
+            setInterval(oneSecondFunction, 100);
+            setInterval(checkIfAMinHasPassed, 100);
 
             canvas.stroke();
         }
