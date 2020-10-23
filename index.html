@@ -1,0 +1,54 @@
+<!doctype = <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Drawing a circle</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="canvas" width="500px" height="500px"></canvas>
+    <div></div>
+    <input type="number" id="x" />
+    <div></div>
+    <input type="number" id="y" />
+    <div></div>
+    <input type="number" id="r" />
+    <div></div>
+    <button onclick="draw()">Draw</button>
+    <button onclick="clearCanvas()">Clear</button>
+
+    <script>
+        function draw() {
+            var canvas = document.getElementById("canvas").getContext("2d");
+
+            var xCoordinate = document.getElementById("x").value;
+            var yCoordinate = document.getElementById("y").value;
+            var radius = document.getElementById("r").value;
+
+            for (var i = 0; i < 360; i++) {
+                for (var j = 0; j < 360; j++) {
+                    if (Math.pow((i - xCoordinate), 2) + Math.pow((j - yCoordinate), 2) == radius * radius) {
+                        canvas.fillRect(i, j, 2, 2);
+                        console.log("x= " + i + ", y= " + j);
+                    }
+
+                }
+                //canvas.fillRect(parseInt(xCoordinate + radius * Math.cos(i)), parseInt(yCoordinate + radius * Math.cos(i)), 2, 2);
+                //   console.log(xCoordinate + radius * Math.cos(i) + " | " + yCoordinate + radius * Math.cos(i));
+
+            }
+            canvas.stroke();
+        }
+
+        function clearCanvas() {
+            window.location.reload(true);
+        }
+    </script>
+</body>
+
+</html>
