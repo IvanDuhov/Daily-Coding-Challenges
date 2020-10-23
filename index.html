@@ -24,74 +24,72 @@
 
     <script>
         function draw() {
-            var canvas = document.getElementById("canvas").getContext("2d");
-
             var xCoordinate = document.getElementById("x").value;
             var yCoordinate = document.getElementById("y").value;
             var radius = document.getElementById("r").value;
+            var canvas = document.getElementById("canvas").getContext("2d");
 
             var count = 1;
 
+            var points = new Array();
+
             for (let a = 0; a < 2 * Math.PI; a += .05) {
-                var x = (xCoordinate * 1.2 + (radius * Math.cos(a)));
-                var y = (yCoordinate * 1.2 + (radius * Math.sin(a)));
+                var x = (xCoordinate / 2 + (radius * Math.cos(a)));
+                var y = (yCoordinate / 2 + (radius * Math.sin(a)));
                 canvas.fillRect(x, y, 1, 1);
                 console.log(x + " " + y);
                 canvas.lineTo(x, y)
+
+                points.push(x);
+                points.push(y);
             }
 
-            /*
-                        var connectedPoints = new Array();
-                        var notConectedPoints = new Array();
+            console.log(points.length / 2);
 
-                        for (var i = 0; i < 500; i++) {
-                            for (var j = 0; j < 500; j++) {
-                                var previousX, previousY;
+            var sixtyPoints = new Array();
 
-                                if (Math.pow((i - xCoordinate), 2) + Math.pow((j - yCoordinate), 2) == radius * radius) {
+            for (var i = 0; i < (points.length - 1); i += 4) {
+                var x = points[i];
+                var y = points[i + 1];
 
-                                    if (previousX != i && previousY != j && count % 2 == 0) {
-                                        canvas.moveTo(previousX, previousY);
-                                        canvas.lineTo(i, j);
-                                        connectedPoints.push(i);
+                sixtyPoints.push(x);
+                sixtyPoints.push(y);
+            }
 
-                                        if (count == 0) {
-                                            notConectedPoints.push(i);
-                                            notConectedPoints.push(j);
-                                        }
+            console.log(sixtyPoints.length / 2);
 
-                                    } else {
-                                        notConectedPoints.push(i);
-                                        notConectedPoints.push(j);
-                                    }
-                                    count++;
+            // TODO: START THE SECONDARY FROM APROXIMATELY 12 O'CLOCK
+            var correctMins = new Array();
+            for (var i = 62; i < 125; i += 2) {
+                var x = points[i];
+                var y = points[i + 1];
+                correctMins.push(x);
+                correctMins.push(y);
+            }
+            for (var i = 0; i < 61; i += 2) {
+                var x = points[i];
+                var y = points[i + 1];
+                correctMins.push(x);
+                correctMins.push(y);
+            }
 
-                                    canvas.fillRect(i, j, 2, 2);
-                                    console.log("x= " + i + ", y= " + j);
-                                }
+            //TODO: DELETE THE PREVIOUS OLD LINE
+            function oneSecondFunction() {
+                var X = sixtyPoints.pop();
+                var Y = sixtyPoints.pop();
 
-                            }
-                        }
+                canvas.moveTo(xCoordinate / 2, yCoordinate / 2);
+                canvas.lineTo(X, Y);
+                canvas.stroke();
 
-                        for (var index = 0; index < notConectedPoints.length; index++) {
-                            if (notConectedPoints.length > 0) {
-                                var x = notConectedPoints.pop();
-                                var y = notConectedPoints.pop();
+                // console.log(X + " | " + Y);
+            }
 
-                                //  var nextX = notConectedPoints.pop();
-                                // var nextY = notConectedPoints.pop();
+            setInterval(oneSecondFunction, 1000);
 
-                                //  notConectedPoints.push(nextX);
-                                // notConectedPoints.push(nextY);
-
-                                canvas.lineTo(x, y);
-                            }
-                        }
-
-                        console.log(notConectedPoints.length);
-                        */
             canvas.stroke();
         }
+
 
         function clearCanvas() {
             window.location.reload(true);
