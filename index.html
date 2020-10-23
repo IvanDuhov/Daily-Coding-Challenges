@@ -32,54 +32,64 @@
 
             var count = 1;
 
-            var connectedPoints = new Array();
-            var notConectedPoints = new Array();
+            for (let a = 0; a < 2 * Math.PI; a += .05) {
+                var x = (xCoordinate * 1.2 + (radius * Math.cos(a)));
+                var y = (yCoordinate * 1.2 + (radius * Math.sin(a)));
+                canvas.fillRect(x, y, 1, 1);
+                console.log(x + " " + y);
+                canvas.lineTo(x, y)
+            }
 
-            for (var i = 0; i < 500; i++) {
-                for (var j = 0; j < 500; j++) {
-                    var previousX, previousY;
+            /*
+                        var connectedPoints = new Array();
+                        var notConectedPoints = new Array();
 
-                    if (Math.pow((i - xCoordinate), 2) + Math.pow((j - yCoordinate), 2) == radius * radius) {
+                        for (var i = 0; i < 500; i++) {
+                            for (var j = 0; j < 500; j++) {
+                                var previousX, previousY;
 
-                        if (previousX != i && previousY != j && count % 2 == 0) {
-                            canvas.moveTo(previousX, previousY);
-                            canvas.lineTo(i, j);
-                            connectedPoints.push(i);
+                                if (Math.pow((i - xCoordinate), 2) + Math.pow((j - yCoordinate), 2) == radius * radius) {
 
-                            if (count == 0) {
-                                notConectedPoints.push(i);
-                                notConectedPoints.push(j);
+                                    if (previousX != i && previousY != j && count % 2 == 0) {
+                                        canvas.moveTo(previousX, previousY);
+                                        canvas.lineTo(i, j);
+                                        connectedPoints.push(i);
+
+                                        if (count == 0) {
+                                            notConectedPoints.push(i);
+                                            notConectedPoints.push(j);
+                                        }
+
+                                    } else {
+                                        notConectedPoints.push(i);
+                                        notConectedPoints.push(j);
+                                    }
+                                    count++;
+
+                                    canvas.fillRect(i, j, 2, 2);
+                                    console.log("x= " + i + ", y= " + j);
+                                }
+
                             }
-
-                        } else {
-                            notConectedPoints.push(i);
-                            notConectedPoints.push(j);
                         }
-                        count++;
 
-                        canvas.fillRect(i, j, 2, 2);
-                        console.log("x= " + i + ", y= " + j);
-                    }
+                        for (var index = 0; index < notConectedPoints.length; index++) {
+                            if (notConectedPoints.length > 0) {
+                                var x = notConectedPoints.pop();
+                                var y = notConectedPoints.pop();
 
-                }
-            }
+                                //  var nextX = notConectedPoints.pop();
+                                // var nextY = notConectedPoints.pop();
 
-            for (var index = 0; index < notConectedPoints.length; index++) {
-                if (notConectedPoints.length > 0) {
-                    var x = notConectedPoints.pop();
-                    var y = notConectedPoints.pop();
+                                //  notConectedPoints.push(nextX);
+                                // notConectedPoints.push(nextY);
 
-                    var nextX = notConectedPoints.pop();
-                    var nextY = notConectedPoints.pop();
+                                canvas.lineTo(x, y);
+                            }
+                        }
 
-                    notConectedPoints.push(nextX);
-                    notConectedPoints.push(nextY);
-
-                    canvas.lineTo(nextX, nextY);
-                }
-            }
-
-            console.log(notConectedPoints.length);
+                        console.log(notConectedPoints.length);
+                        */
             canvas.stroke();
         }
 
